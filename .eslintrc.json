@@ -1,3 +1,13 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended", // React rules
+    "plugin:react-hooks/recommended", // React hooks rules
+    "plugin:prettier/recommended", //Prettier plugin,
+    "next"
+  ],
+  "rules": {
+    //General rules
+    "quotes": ["backtick", { "allowTemplateLiterals": true }]
+  }
 }
