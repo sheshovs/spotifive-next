@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useRouter } from "next/router";
-import { Box, Button, IconButton, Slider, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { API } from "../api/hello";
-import {
-	FastRewindRounded,
-	PlayArrowRounded,
-	FastForwardRounded,
-} from "@mui/icons-material";
+import TopTracks from "@/component/TopTracks";
+import html2canvas from "html2canvas";
+import domtoimage from "dom-to-image";
 
 const initialState = {
 	access_token: ``,
@@ -30,6 +28,30 @@ const Home = () => {
 		});
 	}, [router.asPath]);
 
+	React.useEffect(() => {
+		const getData = async () => {
+			setUser(await API.getUser(values));
+			setTracks(await API.getTopArtists(values));
+		};
+		getData();
+	}, [values]);
+
+	const container = useRef(null);
+
+	function exportToJPEG(dom: any) {
+		domtoimage
+			.toPng(dom)
+			.then(function (dataUrl: string) {
+				const link = document.createElement("a");
+				link.href = dataUrl;
+				link.download = "image.jpeg";
+				link.click();
+			})
+			.catch(function (error: any) {
+				console.error("oops, something went wrong!", error);
+			});
+	}
+
 	return (
 		<Box
 			sx={{
@@ -38,25 +60,13 @@ const Home = () => {
 				minHeight: "100vh",
 				alignItems: "center",
 				flexDirection: "column",
-				marginTop: "20px",
+				marginTop: "0px",
 			}}
 		>
-			<Button
-				variant="contained"
-				size="large"
-				color="success"
-				onClick={async () => {
-					setUser(await API.getUser(values));
-					setTracks(await API.getTopArtists(values));
-				}}
-			>
-				Get Data
-			</Button>
 			{user && (
 				<Box
 					sx={{
 						width: "40%",
-						margin: "10px",
 						display: "flex",
 						flexDirection: "column",
 						alignItems: "center",
@@ -71,193 +81,49 @@ const Home = () => {
 							}}
 						/>
 					)}
-					<Typography variant="h5">{user?.display_name}</Typography>
-				</Box>
-			)}
-			<Button variant="contained" size="large" color="success">
-				Convert to PNG
-			</Button>
-			<Typography
-				variant="h4"
-				align="center"
-				sx={{
-					marginTop: "20px",
-					color: "#fff",
-					fontFamily: "Gotham-Bold",
-					fontWeight: 400,
-				}}
-			>
-				SpotiFive
-				<Typography
-					sx={{
-						fontSize: "14px !important",
-						fontFamily: "Gotham-Light",
-						fontWeight: 400,
-					}}
-				>
-					(últimos 6 meses)
-				</Typography>
-			</Typography>
-			<Box
-				id="top-10"
-				sx={{
-					width: "50%",
-					margin: "10px",
-					padding: "10px 30px",
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				{tracks?.map((track, i) => (
-					<Box
-						key={i}
+					<Typography
+						variant="h5"
 						sx={{
-							width: "600px",
-							height: "100px",
-							margin: "5px 0",
+							marginTop: "20px",
+							color: "#fff",
+							fontFamily: "Gotham-Bold",
+							fontWeight: 400,
+							textTransform: "uppercase",
 						}}
 					>
-						<Box
-							sx={{
-								width: "600px",
-								height: "100px",
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								borderRadius: "20px",
-								background: `url(${track.album.images[1].url})`,
-								backgroundSize: "cover",
-								backgroundPosition: "center center",
-								overflow: "hidden",
+						USER: {user?.display_name}
+					</Typography>
+				</Box>
+			)}
 
-								"&::before": {
-									content: "''",
-									width: "600px",
-									height: "100px",
-									position: "absolute",
-									backdropFilter: "blur(20px)",
-									background: "rgba(0,0,0,.3)",
-									borderRadius: "20px",
-									border: "1px solid rgba(255,255,255,.15)",
-								},
-							}}
-						></Box>
-						<Box
-							sx={{
-								position: "relative",
-								top: "-100px",
-								width: "100%",
-								height: "100%",
-								display: "flex",
-								justifyContent: "space-evenly",
-								alignItems: "center",
-							}}
-						>
-							<img
-								src={`${track.album.images[1].url}`}
-								style={{
-									width: "70px",
-									height: "70px",
-									borderRadius: "10px",
-									border: "1px solid white",
-									boxShadow: "0 0 5px 2px rgba(255,255,255,.2)",
-								}}
-							/>
-							<Box
-								sx={{
-									width: "80%",
-									height: "100%",
-									paddingY: "14px",
-									display: "flex",
-									justifyContent: "space-between",
-								}}
-							>
-								<Box
-									sx={{
-										width: "65%",
-										display: "flex",
-										flexDirection: "column",
-									}}
-								>
-									<Typography
-										sx={{
-											fontSize: "18px !important",
-											color: "#fff",
-											fontWeight: 700,
-										}}
-									>
-										{track.name}
-									</Typography>
-									<Typography
-										sx={{
-											fontSize: "14px !important",
-											color: "#E3E3E3",
-											fontWeight: "100 !important",
-										}}
-									>
-										{track.artists.map((artist: { name: string }, i: number) =>
-											i === track.artists.length - 1
-												? `${artist.name}`
-												: `${artist.name}, `
-										)}
-									</Typography>
-								</Box>
-								<Box
-									sx={{
-										width: "30%",
-										display: "flex",
-										flexDirection: "column",
-										justifyContent: "center",
-										alignItems: "center",
-									}}
-								>
-									<Box
-										sx={{
-											width: "100%",
-											display: "flex",
-											justifyContent: "space-between",
-											alignItems: "center",
-										}}
-									>
-										<IconButton sx={{ width: "40px", height: "40px" }}>
-											<FastRewindRounded
-												sx={{ color: "#fff" }}
-												fontSize="large"
-											/>
-										</IconButton>
-										<IconButton sx={{ width: "40px", height: "40px" }}>
-											<PlayArrowRounded
-												sx={{ color: "#fff" }}
-												fontSize="large"
-											/>
-										</IconButton>
-										<IconButton sx={{ width: "40px", height: "40px" }}>
-											<FastForwardRounded
-												sx={{ color: "#fff" }}
-												fontSize="large"
-											/>
-										</IconButton>
-									</Box>
-									<Box
-										sx={{
-											width: "90%",
-										}}
-									>
-										<Slider
-											size="small"
-											defaultValue={Math.round(Math.random() * 100)}
-											sx={{
-												color: "#fff",
-											}}
-										/>
-									</Box>
-								</Box>
-							</Box>
-						</Box>
-					</Box>
-				))}
-			</Box>
+			<TopTracks ref={container} tracks={tracks} />
+
+			<Button
+				variant="contained"
+				size="large"
+				color="success"
+				sx={{
+					marginBottom: "10px",
+				}}
+				onClick={() => exportToJPEG(container.current)}
+			>
+				Download
+			</Button>
+			<Button
+				variant="contained"
+				size="large"
+				color="success"
+				onClick={() => {
+					router.push({
+						pathname: "http://localhost:3000",
+					});
+				}}
+				sx={{
+					marginBottom: "10px",
+				}}
+			>
+				Logout
+			</Button>
 		</Box>
 	);
 };
