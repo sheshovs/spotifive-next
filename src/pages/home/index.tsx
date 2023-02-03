@@ -83,16 +83,16 @@ const Home = () => {
 				sx={{
 					marginTop: "20px",
 					color: "#fff",
-					fontFamily: "Gotham",
-					fontWeight: 500,
+					fontFamily: "Gotham-Bold",
+					fontWeight: 400,
 				}}
 			>
-				SPOTI-FIVE
+				SpotiFive
 				<Typography
 					sx={{
 						fontSize: "14px !important",
-						fontFamily: "Gotham",
-						fontWeight: 200,
+						fontFamily: "Gotham-Light",
+						fontWeight: 400,
 					}}
 				>
 					(últimos 6 meses)
