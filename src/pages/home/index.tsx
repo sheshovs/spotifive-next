@@ -144,7 +144,7 @@ const Home = () => {
           color="success"
           onClick={() => {
             router.push({
-              pathname: `${process.env.ENV_URL}`,
+              pathname: `${process.env.NEXT_PUBLIC_URL}`,
             })
           }}
           sx={{
