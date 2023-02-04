@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const router = useRouter()
@@ -26,15 +26,7 @@ export default function Home() {
           size="large"
           color="success"
           onClick={() => {
-            router.push({
-              pathname: `https://accounts.spotify.com/authorize`,
-              query: {
-                client_id: `28c510628cfa4d06af9b8b6803186dd8`,
-                redirect_uri: `${process.env.NEXT_PUBLIC_URL}/home`,
-                response_type: `token`,
-                scope: `user-top-read user-read-private`,
-              },
-            })
+            router.push(`https://accounts.spotify.com/authorize`)
           }}
         >
           Log in with Spotify
@@ -43,3 +35,13 @@ export default function Home() {
     </>
   )
 }
+
+// {
+//   pathname: `https://accounts.spotify.com/authorize`,
+//   query: {
+//     client_id: `28c510628cfa4d06af9b8b6803186dd8`,
+//     redirect_uri: `${process.env.NEXT_PUBLIC_URL}/home`,
+//     response_type: `token`,
+//     scope: `user-top-read user-read-private`,
+//   },
+// }
