@@ -8,6 +8,6 @@
   ],
   "rules": {
     //General rules
-    "quotes": ["backtick", { "allowTemplateLiterals": true }]
+    "quotes": ["error","backtick", { "allowTemplateLiterals": true }]
   }
 }

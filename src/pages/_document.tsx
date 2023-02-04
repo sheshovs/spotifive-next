@@ -6,8 +6,8 @@ export default function Document() {
       <Head />
       <body
         style={{
-          background: '#212124',
-          backgroundAttachment: 'fixed',
+          background: `#212124`,
+          backgroundAttachment: `fixed`,
         }}
       >
         <Main />

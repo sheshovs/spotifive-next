@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useEffect, useState } from 'react'
 
 export default function useWindowDimensions() {
@@ -14,8 +15,8 @@ export default function useWindowDimensions() {
       })
     }
 
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    window.addEventListener(`resize`, handleResize)
+    return () => window.removeEventListener(`resize`, handleResize)
   }, [])
 
   return windowDimensions
