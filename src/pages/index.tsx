@@ -1,7 +1,6 @@
 import { Box, Button } from '@mui/material'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { API } from './api/hello'
 
 export default function Home() {
   const router = useRouter()
@@ -15,11 +14,11 @@ export default function Home() {
       </Head>
       <Box
         sx={{
-          display: 'flex',
-          width: '100%',
-          height: '100vh',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: `flex`,
+          width: `100%`,
+          height: `100vh`,
+          justifyContent: `center`,
+          alignItems: `center`,
         }}
       >
         <Button
@@ -28,12 +27,12 @@ export default function Home() {
           color="success"
           onClick={() => {
             router.push({
-              pathname: 'https://accounts.spotify.com/authorize',
+              pathname: `https://accounts.spotify.com/authorize`,
               query: {
-                client_id: '28c510628cfa4d06af9b8b6803186dd8',
-                redirect_uri: 'http://localhost:3000/home',
-                response_type: 'token',
-                scope: 'user-top-read user-read-private',
+                client_id: `28c510628cfa4d06af9b8b6803186dd8`,
+                redirect_uri: `http://localhost:3000/home`,
+                response_type: `token`,
+                scope: `user-top-read user-read-private`,
               },
             })
           }}
