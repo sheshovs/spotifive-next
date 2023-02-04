@@ -9,7 +9,7 @@ import {
   // SpeedDialIcon,
   Typography,
 } from '@mui/material'
-import { API } from '../api/hello'
+import { API } from '../../common/api/hello'
 import TopTracks from '@/component/TopTracks'
 import domtoimage from 'dom-to-image'
 
@@ -144,7 +144,7 @@ const Home = () => {
           color="success"
           onClick={() => {
             router.push({
-              pathname: `http://localhost:3000`,
+              pathname: `${process.env.ENV_URL}`,
             })
           }}
           sx={{
