@@ -13,6 +13,7 @@ import { API } from '../../common/api/hello'
 import TopTracks from '@/component/TopTracks'
 import domtoimage from 'dom-to-image'
 import Link from 'next/link'
+import { useQuery } from 'react-query'
 
 // import { Save, Print, Share, PaletteRounded } from '@mui/icons-material'
 
@@ -31,12 +32,25 @@ const initialState = {
 
 const Home = () => {
   const router = useRouter()
-
   const [values, setValues] = React.useState(initialState)
   const [tracks, setTracks] = React.useState<any[]>([])
   const [user, setUser] = React.useState<any>({})
   // const [open, setOpen] = React.useState(false)
   // const handleDial = () => setOpen(!open)
+
+  useQuery(`userData`, () => API.getUser(values), {
+    enabled: !!values.access_token,
+    onSuccess: (data) => {
+      setUser(data)
+    },
+  })
+
+  useQuery(`userTracks`, () => API.getTopArtists(values), {
+    enabled: !!values.access_token,
+    onSuccess: (data) => {
+      setTracks(data)
+    },
+  })
 
   React.useEffect(() => {
     const path = router.asPath.split(`#`)[1]
@@ -46,15 +60,6 @@ const Home = () => {
       expires_in: `${path.split(`&`)[2].split(`=`)[1]}`,
     })
   }, [router.asPath])
-
-  React.useEffect(() => {
-    console.log(values)
-    const getData = async () => {
-      setUser(await API.getUser(values))
-      setTracks(await API.getTopArtists(values))
-    }
-    getData()
-  }, [values])
 
   const container = useRef(null)
 
@@ -144,11 +149,11 @@ const Home = () => {
           variant="contained"
           size="large"
           color="success"
-          onClick={() => {
-            router.push({
-              pathname: `${process.env.NEXT_PUBLIC_URL}`,
-            })
-          }}
+          // onClick={() => {
+          //   router.push({
+          //     pathname: `${process.env.NEXT_PUBLIC_URL}`,
+          //   })
+          // }}
           sx={{
             marginBottom: `10px`,
             zIndex: 1,
