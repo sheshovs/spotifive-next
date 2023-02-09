@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export default function Home() {
@@ -25,19 +26,27 @@ export default function Home() {
           variant="contained"
           size="large"
           color="success"
-          onClick={() => {
-            router.push({
-              pathname: `https://accounts.spotify.com/authorize`,
-              query: {
-                client_id: `28c510628cfa4d06af9b8b6803186dd8`,
-                redirect_uri: `${process.env.NEXT_PUBLIC_URL}/home`,
-                response_type: `token`,
-                scope: `user-top-read user-read-private`,
-              },
-            })
-          }}
+          // onClick={() => {
+          //   router.push({
+          //     pathname: ``,
+          //     query: {
+          //       client_id: `28c510628cfa4d06af9b8b6803186dd8`,
+          //       redirect_uri: `${process.env.NEXT_PUBLIC_URL}/home`,
+          //       response_type: `token`,
+          //       scope: `user-top-read user-read-private`,
+          //     },
+          //   })
+          // }}
         >
-          Log in with Spotify
+          <Link
+            href={`https://accounts.spotify.com/authorize?client_id=28c510628cfa4d06af9b8b6803186dd8&redirect_uri=${process.env.NEXT_PUBLIC_URL}/home&response_type=token&scope=user-top-read user-read-private`}
+            style={{
+              color: `#fff`,
+              textDecoration: `none`,
+            }}
+          >
+            Log in with Spotify
+          </Link>
         </Button>
       </Box>
     </>
