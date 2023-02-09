@@ -12,6 +12,7 @@ import {
 import { API } from '../../common/api/hello'
 import TopTracks from '@/component/TopTracks'
 import domtoimage from 'dom-to-image'
+import Link from 'next/link'
 
 // import { Save, Print, Share, PaletteRounded } from '@mui/icons-material'
 
@@ -47,6 +48,7 @@ const Home = () => {
   }, [router.asPath])
 
   React.useEffect(() => {
+    console.log(values)
     const getData = async () => {
       setUser(await API.getUser(values))
       setTracks(await API.getTopArtists(values))
@@ -152,7 +154,15 @@ const Home = () => {
             zIndex: 1,
           }}
         >
-          Logout
+          <Link
+            href={`${process.env.NEXT_PUBLIC_URL}`}
+            style={{
+              color: `#fff`,
+              textDecoration: `none`,
+            }}
+          >
+            Logout
+          </Link>
         </Button>
       </Box>
     </>
